@@ -1,11 +1,8 @@
-from app.shortener.models import URL
-
 INDEX_OFFSET = 10_000  # to generate short URLs with min. length of 3 characters
 
 
-def generate_short_url() -> str:
-    element_index = URL.objects.count() + 1  # because db indices start at 1
-    return Base62Converter.encode(element_index + INDEX_OFFSET)
+def generate_short_url(next_element_index) -> str:
+    return Base62Converter.encode(next_element_index + INDEX_OFFSET)
 
 
 def get_index_from_short_url(url: str) -> int:

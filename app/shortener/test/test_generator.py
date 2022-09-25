@@ -11,8 +11,8 @@ class TestShortURLGenerator(TestCase):
         r = Base62Converter.encode(30000)
         self.assertEqual(r, '7NS')
 
-        r = generate_short_url()
-        self.assertEqual(r, '2Bi')
+        r = generate_short_url(next_element_index=1)
+        self.assertEqual(r, '2Bj')
 
     def test_al2l2(self):
         r = Base62Converter.encode(0)
@@ -21,10 +21,10 @@ class TestShortURLGenerator(TestCase):
         r = Base62Converter.encode(30000)
         self.assertEqual(r, '7NS')
 
-        new_urls = [URL(long=f"XDD{i}", short=f"XD{i}") for i in range(2000)]
-        URL.objects.bulk_create(new_urls)
+        # new_urls = [URL(long=f"XDD{i}", short=f"XD{i}") for i in range(2000)]
+        # URL.objects.bulk_create(new_urls)
 
-        r = generate_short_url()
+        r = generate_short_url(next_element_index=2000)
         self.assertEqual(r, '37y')
 
     def test_al3(self):
