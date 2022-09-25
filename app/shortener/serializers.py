@@ -2,13 +2,13 @@ from rest_framework import serializers
 from .models import URL
 
 
-class URLSerializer(serializers.ModelSerializer):
+class LongURLSerializer(serializers.ModelSerializer):
     class Meta:
         model = URL
         fields = ["long"]
 
 
-class FullURLSerializer(serializers.ModelSerializer):
+class URLSerializer(serializers.ModelSerializer):
     class Meta:
         model = URL
         fields = ["long", "short"]
