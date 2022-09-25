@@ -30,7 +30,7 @@ class URLApiView(generics.GenericAPIView):
         # TODO: Add validation https://docs.djangoproject.com/en/4.1/ref/validators/
         # TODO: Add extensive tests of this API
 
-        url = URL.objects.filter(id=get_index_from_short_url(short_link)).first()
+        url = URL.from_short_link(short_link)
         if not url:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -53,8 +53,7 @@ class ShortURLRedirectView(View):
     http_method_names = ['get']
 
     def get(self, request, *args, **kwargs):
-        short_link = request.path[1:]
-        url = URL.objects.filter(id=get_index_from_short_url(short_link)).first()
+        url = URL.from_short_link(request.path[1:])
         if not url:
             return render(request, "shortener/404.html", status=status.HTTP_404_NOT_FOUND)
 
