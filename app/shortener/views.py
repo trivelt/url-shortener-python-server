@@ -34,8 +34,7 @@ class URLApiView(generics.GenericAPIView):
         if not url:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        serializer = URLSerializer(url, many=False)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(URLSerializer(url).data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         long_url = request.data.get(MessageParam.LONG_URL)
