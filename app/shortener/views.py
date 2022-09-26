@@ -10,6 +10,7 @@ from .models import URL
 from .serializers import LongURLSerializer, URLSerializer
 from .generator import generate_short_url, get_index_from_short_url
 
+from urllib.parse import urlsplit
 
 class MessageParam:
     SHORT_URL = "short"
@@ -43,8 +44,12 @@ class URLApiView(generics.GenericAPIView):
         except ValidationError as e:
             return Response(data={MessageParam.ERROR: e.message}, status=status.HTTP_400_BAD_REQUEST)
 
-        url = URL.objects.create(long=long_url, short=generate_short_url(URL.next_index()))
+        url = URL.objects.create(long=long_url, short=generate_short_url(self._base_url(request), URL.next_index()))
         return Response(URLSerializer(url).data, status=status.HTTP_201_CREATED)
+
+    def _base_url(self, request) -> str:
+        splitted_url = urlsplit(request.build_absolute_uri())
+        return f"{splitted_url.scheme}://{splitted_url.netloc}"
 
 
 class ShortURLRedirectView(View):
