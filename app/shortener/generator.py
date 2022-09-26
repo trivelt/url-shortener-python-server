@@ -1,3 +1,5 @@
+from app.shortener.exceptions import InvalidShortcut
+
 INDEX_OFFSET = 10_000  # to generate short URLs with min. length of 3 characters
 
 
@@ -28,12 +30,14 @@ class Base62Converter:
         return result
 
     @staticmethod
-    def decode(short_url: str) -> int:
+    def decode(shortcut: str) -> int:
         result = 0
         index = 0
 
-        for char in short_url:
-            power = (len(short_url) - (index + 1))
+        for char in shortcut:
+            power = (len(shortcut) - (index + 1))
+            if char not in Base62Converter.ALPHABET_MAP:
+                raise InvalidShortcut
             result += Base62Converter.ALPHABET_MAP[char] * (Base62Converter.BASE ** power)
             index += 1
 

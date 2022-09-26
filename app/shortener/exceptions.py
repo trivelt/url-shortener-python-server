@@ -1,0 +1,2 @@
+class InvalidShortcut(ValueError):
+    pass

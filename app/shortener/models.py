@@ -1,5 +1,7 @@
 from django.db import models
 from app.shortener.generator import get_index_from_shortcut
+from app.shortener.exceptions import InvalidShortcut
+
 
 class URL(models.Model):
     id = models.AutoField(primary_key=True)
@@ -8,7 +10,10 @@ class URL(models.Model):
 
     @staticmethod
     def from_shortcut(shortcut: str) -> 'URL':
-        return URL.objects.filter(id=get_index_from_shortcut(shortcut)).first()
+        try:
+            return URL.objects.filter(id=get_index_from_shortcut(shortcut)).first()
+        except (OverflowError, InvalidShortcut):
+            return None
 
     @staticmethod
     def next_index() -> int:
