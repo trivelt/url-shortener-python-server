@@ -18,9 +18,6 @@ In order to run application, please execute:
 
     python3 manage.py runserver 
 
-Then you can set `CSV_DATA_FILE` as `None` to operate on loaded data and and avoid
-updating them during each launch
-
 ## Tests
 You can run automated tests by executing the following command:
 
