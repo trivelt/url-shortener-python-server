@@ -8,7 +8,7 @@ from rest_framework import permissions
 from rest_framework.views import View
 from .models import URL
 from .serializers import LongURLSerializer, URLSerializer
-from .generator import generate_short_url, get_index_from_shortcut
+from .generator import generate_short_url
 
 from urllib.parse import urlsplit
 
