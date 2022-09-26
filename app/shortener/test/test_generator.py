@@ -1,6 +1,6 @@
 from django.test import TestCase
 from app.shortener.models import URL
-from app.shortener.generator import Base62Converter, generate_short_url, get_index_from_short_url
+from app.shortener.generator import Base62Converter, generate_short_url, get_index_from_shortcut
 
 
 class TestShortURLGenerator(TestCase):
@@ -40,5 +40,5 @@ class TestShortURLGenerator(TestCase):
         r = Base62Converter.decode('37y')
         self.assertEqual(r, 12000)
 
-        r = get_index_from_short_url("37y")
+        r = get_index_from_shortcut("37y")
         self.assertEqual(r, 2000)

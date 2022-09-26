@@ -6,7 +6,7 @@ def generate_short_url(url_base: str, next_element_index: int) -> str:
     return f"{url_base}/{shortcut}"
 
 
-def get_index_from_short_url(url: str) -> int:
+def get_index_from_shortcut(url: str) -> int:
     return Base62Converter.decode(url) - INDEX_OFFSET
 
 

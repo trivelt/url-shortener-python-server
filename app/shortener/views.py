@@ -8,13 +8,14 @@ from rest_framework import permissions
 from rest_framework.views import View
 from .models import URL
 from .serializers import LongURLSerializer, URLSerializer
-from .generator import generate_short_url, get_index_from_short_url
+from .generator import generate_short_url, get_index_from_shortcut
 
 from urllib.parse import urlsplit
 
+
 class MessageParam:
-    SHORT_URL = "short"
-    LONG_URL = "long"
+    SHORT_LINK = "short"
+    LONG_LINK = "long"
     ERROR = "error"
 
 
@@ -24,21 +25,21 @@ class URLApiView(generics.GenericAPIView):
     serializer_class = LongURLSerializer
 
     def get(self, request, *args, **kwargs):
-        short_link = request.query_params.get(MessageParam.SHORT_URL)
-        if short_link is None:
+        shortcut = request.query_params.get(MessageParam.SHORT_LINK)
+        if shortcut is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         # TODO: Add validation https://docs.djangoproject.com/en/4.1/ref/validators/
         # TODO: Add extensive tests of this API
 
-        url = URL.from_short_link(short_link)
+        url = URL.from_shortcut(shortcut)
         if not url:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         return Response(URLSerializer(url).data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        long_url = request.data.get(MessageParam.LONG_URL)
+        long_url = request.data.get(MessageParam.LONG_LINK)
         try:
             URLValidator()(long_url)
         except ValidationError as e:
@@ -57,7 +58,7 @@ class ShortURLRedirectView(View):
     http_method_names = ['get']
 
     def get(self, request, *args, **kwargs):
-        url = URL.from_short_link(request.path[1:])
+        url = URL.from_shortcut(request.path[1:])
         if not url:
             return render(request, "shortener/404.html", status=status.HTTP_404_NOT_FOUND)
 
