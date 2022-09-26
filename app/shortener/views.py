@@ -29,9 +29,6 @@ class URLApiView(generics.GenericAPIView):
         if shortcut is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        # TODO: Add validation https://docs.djangoproject.com/en/4.1/ref/validators/
-        # TODO: Add extensive tests of this API
-
         url = URL.from_shortcut(shortcut)
         if not url:
             return Response(status=status.HTTP_404_NOT_FOUND)
