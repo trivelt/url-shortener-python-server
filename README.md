@@ -16,7 +16,7 @@ See also: [URL Shorteners Client (Haskell)](https://github.com/trivelt/url-short
 ## Running
 In order to run application, please execute:
 
-    python3 manage.py runserver 
+    python manage.py runserver 
 
 ## Tests
 You can run automated tests by executing the following command:
