@@ -12,6 +12,9 @@ class TestAPI(TestCase):
         response = self.client.get('/api/v1/link', {'short': 'not-existing'}, format='json')
         self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
 
+        response = self.client.get('/api/v1/link', {}, format='json')
+        self.assertEqual(status.HTTP_404_NOT_FOUND, response.status_code)
+
         URL.objects.create(long='http://some-long-link.com', short='http://localhost/2Bj')
         response = self.client.get('/api/v1/link', {'short': '2Bj'}, format='json')
         self.assertEqual(status.HTTP_200_OK, response.status_code)
@@ -21,6 +24,9 @@ class TestAPI(TestCase):
         response = self.client.post('/api/v1/link', {'long': 'invalid-url'})
         self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
         self.assertEqual('Enter a valid URL.', response.data.get('error'))
+
+        response = self.client.post('/api/v1/link', {})
+        self.assertEqual(status.HTTP_400_BAD_REQUEST, response.status_code)
 
         response = self.client.post('/api/v1/link', {'long': 'https://polydev.pl'})
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
